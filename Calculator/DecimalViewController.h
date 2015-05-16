@@ -17,4 +17,6 @@
 @property NSString *opPrev;
 @property double firstNum;
 @property double secondNum;
+@property int pressMore;
+@property int equalPress;
 @end

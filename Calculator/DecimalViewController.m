@@ -15,7 +15,7 @@
 
 @implementation DecimalViewController
 
-@synthesize console, opcode, opPrev, firstNum, secondNum;
+@synthesize console, opcode, opPrev, firstNum, secondNum, pressMore, equalPress;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -85,7 +85,7 @@
         [button addTarget: self action: @selector(tapNumber:) forControlEvents:UIControlEventTouchDown];
         [button addTarget: self action: @selector(removeTap:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchDragExit];
         // get all the text and populate the number pad.
-        NSArray *numPadArr = [NSArray arrayWithObjects: @"C", @"%", @"+/-", @"÷", @"1", @"2", @"3", @"X", @"4", @"5", @"6", @"-", @"7", @"8", @"9", @"+", @"0", @".", @"=", nil];
+        NSArray *numPadArr = [NSArray arrayWithObjects: @"C", @"%", @"+/-", @"÷", @"1", @"2", @"3", @"×", @"4", @"5", @"6", @"-", @"7", @"8", @"9", @"+", @"0", @".", @"=", nil];
         [button setTitle: [numPadArr objectAtIndex: (NSUInteger) i ] forState: UIControlStateNormal];
         [button setTitleColor: [UIColor blackColor] forState: UIControlStateNormal];
         //Store the button in our array
@@ -102,16 +102,21 @@
 
 - (void) tapNumber:(UIButton *)sender {
     if (opcode != nil) {
-        self.console.text = @"";
+        if ((pressMore != 1 || (pressMore == 1 && [sender.titleLabel.text intValue] != 0)) && (!(opPrev == NULL))){
+            self.console.text = @"";
+        }
         opcode = nil;
     }
     if (sender.tag == 4 || sender.tag == 5 || sender.tag == 6 || sender.tag == 8 || sender.tag == 9 || sender.tag == 10 || sender.tag == 12 || sender.tag == 13 || sender.tag == 14 || sender.tag == 16){
         [sender setTitleColor: [UIColor colorWithRed:120.0/255.0f  green:120.0/255.0f blue:120.0/255.0f alpha:1.0f] forState: UIControlStateHighlighted];
-        self.console.text = [self.console.text stringByAppendingString: sender.titleLabel.text];
-
+        self.console.text = [self.console.text stringByAppendingString: sender.titleLabel.text]; // put numbers into the textfield
     } else if (sender.tag == 17){
         if ([[self.console.text componentsSeparatedByString: @"."]count] - 1 == 0){
-            self.console.text = [self.console.text stringByAppendingString: sender.titleLabel.text];
+            if (equalPress != 1){
+                self.console.text = [self.console.text stringByAppendingString: sender.titleLabel.text];// add a decimal point
+            } else {
+                self.console.text = @".0";
+            }
         }
     } else if (sender.tag == 1){
       // percent op
@@ -126,38 +131,43 @@
             self.console.text = [NSString stringWithFormat: @"%f", sign];
         }
     } else {
-        opcode = sender.titleLabel.text;
+        opcode = sender.titleLabel.text; // this means it is an operation
     }
-    if ([opcode containsString: @"+"] || [opcode containsString: @"-"] || [opcode containsString: @"X"] || [opcode containsString: @"÷"]){
+    if ([opcode containsString: @"+"] || [opcode containsString: @"-"] || [opcode containsString: @"×"] || [opcode containsString: @"÷"]){
         firstNum = [self.console.text doubleValue];
         opPrev = opcode;
+        pressMore = 1; // used to detect if operator has already been pressed
+        equalPress = 0; // reset the counter for equals
     } else if ([opcode containsString: @"="]){
-        secondNum = [self.console.text doubleValue];
-        if ([opPrev containsString: @"+"]){
-            if ((firstNum + secondNum) == (int)(firstNum + secondNum)){
-                self.console.text = [NSString stringWithFormat: @"%d", (int)(firstNum + secondNum)];
-            } else {
-                self.console.text = [NSString stringWithFormat: @"%f", firstNum + secondNum];
-            }
-        } else if ([opPrev containsString: @"-"]){
-            if ((firstNum - secondNum) == (int)(firstNum - secondNum)){
-                self.console.text = [NSString stringWithFormat: @"%d", (int)(firstNum - secondNum)];
-            } else {
-                self.console.text = [NSString stringWithFormat: @"%f", firstNum - secondNum];
-            }
-        } else if ([opPrev containsString: @"X"]){
-            if ((firstNum * secondNum) == (int)(firstNum * secondNum)){
-                self.console.text = [NSString stringWithFormat: @"%d", (int)(firstNum * secondNum)];
-            } else {
-                self.console.text = [NSString stringWithFormat: @"%f", firstNum * secondNum];
-            }
-        } else if ([opPrev containsString: @"÷"]) {
-            if ((firstNum / secondNum) == (int)(firstNum / secondNum)){
-                self.console.text = [NSString stringWithFormat: @"%d", (int)(firstNum / secondNum)];
-            } else {
-                self.console.text = [NSString stringWithFormat: @"%f", firstNum / secondNum];
-            }
+        if (equalPress == 0){
+                secondNum = [self.console.text doubleValue];
+                if ([opPrev containsString: @"+"]){
+                    if ((firstNum + secondNum) == (int)(firstNum + secondNum)){
+                        self.console.text = [NSString stringWithFormat: @"%d", (int)(firstNum + secondNum)];
+                    } else {
+                        self.console.text = [NSString stringWithFormat: @"%f", firstNum + secondNum];
+                    }
+                } else if ([opPrev containsString: @"-"]){
+                    if ((firstNum - secondNum) == (int)(firstNum - secondNum)){
+                        self.console.text = [NSString stringWithFormat: @"%d", (int)(firstNum - secondNum)];
+                    } else {
+                        self.console.text = [NSString stringWithFormat: @"%f", firstNum - secondNum];
+                    }
+                } else if ([opPrev containsString: @"×"]){
+                    if ((firstNum * secondNum) == (int)(firstNum * secondNum)){
+                        self.console.text = [NSString stringWithFormat: @"%d", (int)(firstNum * secondNum)];
+                    } else {
+                        self.console.text = [NSString stringWithFormat: @"%f", firstNum * secondNum];
+                    }
+                } else if ([opPrev containsString: @"÷"]) {
+                    if ((firstNum / secondNum) == (int)(firstNum / secondNum)){
+                        self.console.text = [NSString stringWithFormat: @"%d", (int)(firstNum / secondNum)];
+                    } else {
+                        self.console.text = [NSString stringWithFormat: @"%f", firstNum / secondNum];
+                    }
+                }
         }
+        equalPress = 1;
     }
     if (sender.tag == 0){
         // clear
@@ -165,6 +175,7 @@
         opPrev = nil;
         firstNum = 0;
         secondNum = 0;
+        equalPress = 0;
     }
     sender.alpha = 0.8;
 }
