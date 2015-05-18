@@ -10,8 +10,6 @@
 
 @interface DecimalViewController : UIViewController
 
-- (void) tapNumber :(UIButton *)sender;
-- (void) removeTap :(UIButton *)sender;
 @property (nonatomic, strong) UITextField *console;
 @property NSString *opcode;
 @property NSString *opPrev;
@@ -19,4 +17,13 @@
 @property double secondNum;
 @property int pressMore;
 @property int equalPress;
+@property int colorCount;
+@property UIImageView *consoleColor;
+@property NSMutableArray *buttonArray;
+@property NSMutableArray *colorArray;
+
+- (void) tapNumber :(UIButton *)sender;
+- (void) removeTap :(UIButton *)sender;
+- (void) changeColorLeft: (UISwipeGestureRecognizer *) swipe;
+- (void) changeColorRight: (UISwipeGestureRecognizer *) swipe;
 @end

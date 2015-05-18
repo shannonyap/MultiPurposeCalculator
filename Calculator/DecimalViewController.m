@@ -15,7 +15,7 @@
 
 @implementation DecimalViewController
 
-@synthesize console, opcode, opPrev, firstNum, secondNum, pressMore, equalPress;
+@synthesize console, opcode, opPrev, firstNum, secondNum, pressMore, equalPress, consoleColor, buttonArray, colorArray, colorCount;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -25,6 +25,22 @@
     backgroundImage.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
     backgroundImage.userInteractionEnabled = YES; // enable touch events
     [self.view addSubview:backgroundImage];
+    
+    // Add colors to colorArray
+    self.colorArray = [[NSMutableArray alloc] initWithObjects:
+                       [UIColor colorWithRed: 72.0/255.0f green:137.0/255.0f blue:249.0/255.0f alpha:0.8f], // blue
+                       [UIColor colorWithRed: 72.0/255.0f green:137.0/255.0f blue:249.0/255.0f alpha:1.0f],
+                       [UIColor colorWithRed: 255.0/255.0f green:98/255.0f blue: 98/255.0f alpha: 0.8f], // red
+                       [UIColor colorWithRed: 255.0/255.0f green:98/255.0f blue: 98/255.0f alpha: 1.0f],
+                       [UIColor colorWithRed: 212/255.0f green:137.0/255.0f blue:255.0/255.0f alpha:0.8f], // purple
+                       [UIColor colorWithRed: 212/255.0f green:137.0/255.0f blue:255.0/255.0f alpha:1.0f],
+                       [UIColor colorWithRed: 255.0/255.0f green: 240/255.0f blue: 137.0/255.0f alpha: 0.8f], // yellow
+                       [UIColor colorWithRed: 255.0/255.0f green: 240/255.0f blue: 137.0/255.0f alpha: 1.0f],
+                       [UIColor colorWithRed: 236/255.0f green: 183/255.0f blue: 76/255.0f alpha: 0.8f], // orange
+                       [UIColor colorWithRed: 236/255.0f green: 183/255.0f blue: 76/255.0f alpha: 1.0f],
+                       [UIColor colorWithRed: 0/255.0f green: 191/255.0f blue: 220/255.0f alpha: 0.8f], // turquoise
+                       [UIColor colorWithRed: 0/255.0f green: 191/255.0f blue: 220/255.0f alpha: 1.0f],
+                       nil];
     
     // Blur effect to show calculator number screen
     UIImageView *img = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, self.view.bounds.size.width, 149.55)];
@@ -36,9 +52,20 @@
     visualEffectView.frame = img.bounds;
     [img addSubview:visualEffectView];
     
-    UIImageView *consoleColor = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, self.view.bounds.size.width, img.bounds.size.height)];
-    [consoleColor setBackgroundColor: [UIColor colorWithRed:72.0/255.0f green:137.0/255.0f blue:249.0/255.0f alpha:0.8f]];
-    [self.view addSubview: consoleColor];
+    // console color
+    self.consoleColor = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, self.view.bounds.size.width, img.bounds.size.height)];
+    [self.consoleColor setBackgroundColor: [self.colorArray objectAtIndex: 0]];
+    self.consoleColor.userInteractionEnabled = YES;
+    [self.view addSubview: self.consoleColor];
+    
+    // Swipe to change background color!
+    UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget: self action: @selector(changeColorLeft:)];
+    [swipeLeft setDirection: UISwipeGestureRecognizerDirectionLeft];
+    [self.consoleColor addGestureRecognizer: swipeLeft];
+    
+    UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget: self action: @selector(changeColorRight:)];
+    [swipeRight setDirection: UISwipeGestureRecognizerDirectionRight];
+    [self.consoleColor addGestureRecognizer: swipeRight];
     
     // Console for showing calculator input
     self.console = [[UITextField alloc] initWithFrame: CGRectMake(0, 0, self.view.frame.size.width, img.frame.size.height)];
@@ -53,7 +80,7 @@
     
     // Creating the number pad
     CGRect numPad = CGRectMake(0, img.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height - img.bounds.size.height - self.tabBarController.tabBar.frame.size.height);
-    NSMutableArray *buttonArray = [[NSMutableArray alloc] init];
+    self.buttonArray = [[NSMutableArray alloc] init];
     int x = 0;
     int y = 0;
     for(int i = 0; i < 19; i++){
@@ -73,8 +100,7 @@
         // button design
         button.backgroundColor = [UIColor colorWithRed: 245.0/255.0f green:245.0/255.0f blue:245.0/255.0f alpha: 1.0f];
         if (i == 0 || i == 1 || i == 2 || i == 3 || i == 7 || i == 11 || i == 15 || i == 18){
-            button.backgroundColor = [UIColor colorWithRed:72.0/255.0f green:137.0/255.0f blue:249.0/255.0f alpha:1.0f];
-            
+            button.backgroundColor = [self.colorArray objectAtIndex: 1];
         }
         button.tag = i;
         button.titleLabel.font = [UIFont systemFontOfSize: 30];
@@ -89,9 +115,9 @@
         [button setTitle: [numPadArr objectAtIndex: (NSUInteger) i ] forState: UIControlStateNormal];
         [button setTitleColor: [UIColor blackColor] forState: UIControlStateNormal];
         //Store the button in our array
-        [buttonArray addObject:button];
+        [self.buttonArray addObject:button];
     }
-    for(UIButton *buttons in buttonArray){
+    for(UIButton *buttons in self.buttonArray){
         if (buttons.tag == 0 || buttons.tag == 1 || buttons.tag == 2 || buttons.tag == 3 || buttons.tag == 7 || buttons.tag == 11 || buttons.tag == 15 || buttons.tag == 18){
             [buttons setTitleColor: [UIColor colorWithRed: 200.0/255.0f green:200.0/255.0f blue:200.0/255.0f alpha: 1.0f] forState: UIControlStateNormal];
         }
@@ -121,14 +147,15 @@
     } else if (sender.tag == 1){
       // percent op
         double percentile = [self.console.text doubleValue]/100.0;
-        self.console.text = [NSString stringWithFormat: @"%f", percentile];
+        self.console.text = [NSString stringWithFormat: @"%g", percentile];
+        
     } else if (sender.tag == 2){
         // negative or positive
         double sign = -[self.console.text doubleValue];
         if (sign == (int) sign){
             self.console.text = [NSString stringWithFormat: @"%d", (int) sign];
         } else {
-            self.console.text = [NSString stringWithFormat: @"%f", sign];
+            self.console.text = [NSString stringWithFormat: @"%g", sign];
         }
     } else {
         opcode = sender.titleLabel.text; // this means it is an operation
@@ -145,25 +172,25 @@
                     if ((firstNum + secondNum) == (int)(firstNum + secondNum)){
                         self.console.text = [NSString stringWithFormat: @"%d", (int)(firstNum + secondNum)];
                     } else {
-                        self.console.text = [NSString stringWithFormat: @"%f", firstNum + secondNum];
+                        self.console.text = [NSString stringWithFormat: @"%g", firstNum + secondNum];
                     }
                 } else if ([opPrev containsString: @"-"]){
                     if ((firstNum - secondNum) == (int)(firstNum - secondNum)){
                         self.console.text = [NSString stringWithFormat: @"%d", (int)(firstNum - secondNum)];
                     } else {
-                        self.console.text = [NSString stringWithFormat: @"%f", firstNum - secondNum];
+                        self.console.text = [NSString stringWithFormat: @"%g", firstNum - secondNum];
                     }
                 } else if ([opPrev containsString: @"×"]){
                     if ((firstNum * secondNum) == (int)(firstNum * secondNum)){
                         self.console.text = [NSString stringWithFormat: @"%d", (int)(firstNum * secondNum)];
                     } else {
-                        self.console.text = [NSString stringWithFormat: @"%f", firstNum * secondNum];
+                        self.console.text = [NSString stringWithFormat: @"%g", firstNum * secondNum];
                     }
                 } else if ([opPrev containsString: @"÷"]) {
                     if ((firstNum / secondNum) == (int)(firstNum / secondNum)){
                         self.console.text = [NSString stringWithFormat: @"%d", (int)(firstNum / secondNum)];
                     } else {
-                        self.console.text = [NSString stringWithFormat: @"%f", firstNum / secondNum];
+                        self.console.text = [NSString stringWithFormat: @"%g", firstNum / secondNum];
                     }
                 }
         }
@@ -184,6 +211,40 @@
     sender.alpha = 1;
 }
 
+- (void) changeColorLeft:(UISwipeGestureRecognizer *)swipe {
+    if (colorCount > 10){
+        colorCount = 0;
+    }
+    [UIImageView animateWithDuration: 1.0 animations: ^{
+    [self.consoleColor setBackgroundColor: [self.colorArray objectAtIndex: colorCount]];
+        }];
+    for(UIButton *buttons in self.buttonArray){
+        if (buttons.tag == 0 || buttons.tag == 1 || buttons.tag == 2 || buttons.tag == 3 || buttons.tag == 7 || buttons.tag == 11 || buttons.tag == 15 || buttons.tag == 18){
+            [UIButton animateWithDuration: 1.0 animations: ^{
+                buttons.backgroundColor = [self.colorArray objectAtIndex: colorCount + 1];
+            }];
+        }
+    }
+    colorCount += 2;
+}
+
+- (void) changeColorRight:(UISwipeGestureRecognizer *)swipe {
+    if (colorCount - 2 < 0){
+        colorCount = 12;
+    }
+    colorCount--;
+    for(UIButton *buttons in self.buttonArray){
+        if (buttons.tag == 0 || buttons.tag == 1 || buttons.tag == 2 || buttons.tag == 3 || buttons.tag == 7 || buttons.tag == 11 || buttons.tag == 15 || buttons.tag == 18){
+            [UIButton animateWithDuration: 1.0 animations: ^{
+                buttons.backgroundColor = [self.colorArray objectAtIndex: colorCount];
+            }];
+        }
+    }
+    colorCount--;
+    [UIImageView animateWithDuration: 1.0 animations: ^{
+        [self.consoleColor setBackgroundColor: [self.colorArray objectAtIndex: colorCount]];
+    }];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

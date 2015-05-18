@@ -10,6 +10,9 @@ Updates:
 5/16/2015
 - Solved bug issues that cleared the text field when an operator button was pressed more than once.
 
+5/18/2015 
+- Added the ability to change background colors. Swipe either left or right and watch!
+
 
 To do:
 Adding additional functionalities such as landscape orientation ability. 
