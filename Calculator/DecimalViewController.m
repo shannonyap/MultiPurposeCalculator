@@ -19,6 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor blackColor];
     UIImageView *backgroundImage = [[UIImageView alloc] initWithImage: nil];
@@ -36,8 +37,8 @@
                        [UIColor colorWithRed: 212/255.0f green:137.0/255.0f blue:255.0/255.0f alpha:1.0f],
                        [UIColor colorWithRed: 255.0/255.0f green: 240/255.0f blue: 137.0/255.0f alpha: 0.8f], // yellow
                        [UIColor colorWithRed: 255.0/255.0f green: 240/255.0f blue: 137.0/255.0f alpha: 1.0f],
-                       [UIColor colorWithRed: 236/255.0f green: 183/255.0f blue: 76/255.0f alpha: 0.8f], // orange
-                       [UIColor colorWithRed: 236/255.0f green: 183/255.0f blue: 76/255.0f alpha: 1.0f],
+                       [UIColor colorWithRed: 255/255.0f green: 128/255.0f blue: 0/255.0f alpha: 0.8f], // orange
+                       [UIColor colorWithRed: 255/255.0f green: 128/255.0f blue: 0/255.0f alpha: 1.0f],
                        [UIColor colorWithRed: 0/255.0f green: 191/255.0f blue: 220/255.0f alpha: 0.8f], // turquoise
                        [UIColor colorWithRed: 0/255.0f green: 191/255.0f blue: 220/255.0f alpha: 1.0f],
                        nil];
@@ -159,6 +160,11 @@
         }
     } else {
         opcode = sender.titleLabel.text; // this means it is an operation
+        [UIView animateWithDuration: 0.15 animations: ^{
+            [self.console setAlpha: 0.0f];
+        }completion: ^(BOOL finished){
+            [self.console setAlpha: 1.0f];
+        }];
     }
     if ([opcode containsString: @"+"] || [opcode containsString: @"-"] || [opcode containsString: @"×"] || [opcode containsString: @"÷"]){
         firstNum = [self.console.text doubleValue];
@@ -215,12 +221,12 @@
     if (colorCount > 10){
         colorCount = 0;
     }
-    [UIImageView animateWithDuration: 1.0 animations: ^{
+    [UIImageView animateWithDuration: 0.5 animations: ^{
     [self.consoleColor setBackgroundColor: [self.colorArray objectAtIndex: colorCount]];
         }];
     for(UIButton *buttons in self.buttonArray){
         if (buttons.tag == 0 || buttons.tag == 1 || buttons.tag == 2 || buttons.tag == 3 || buttons.tag == 7 || buttons.tag == 11 || buttons.tag == 15 || buttons.tag == 18){
-            [UIButton animateWithDuration: 1.0 animations: ^{
+            [UIButton animateWithDuration: 0.5 animations: ^{
                 buttons.backgroundColor = [self.colorArray objectAtIndex: colorCount + 1];
             }];
         }

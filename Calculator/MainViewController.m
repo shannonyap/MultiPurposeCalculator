@@ -39,7 +39,7 @@
     UIImage *decimalImg =[[UIImage alloc] initWithContentsOfFile: [[NSBundle mainBundle] pathForResource: @"decimal" ofType: @"png" inDirectory: @"icons"]] ;
     UIImage *scaledDecImage =
     [UIImage imageWithCGImage:[decimalImg CGImage]
-                        scale: (decimalImg.scale * 1.0)
+                        scale: (decimalImg.scale * 16.0)
                   orientation:(decimalImg.imageOrientation)];
     UITabBarItem *decimalTab = [[UITabBarItem alloc] initWithTitle: @"Decimal" image: scaledDecImage tag: 0];
     decimalCalc.tabBarItem = decimalTab;
@@ -68,6 +68,9 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (BOOL) shouldAutorotate {
+    return NO;
+}
 /*
 #pragma mark - Navigation
 

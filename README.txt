@@ -13,8 +13,9 @@ Updates:
 5/18/2015 
 - Added the ability to change background colors. Swipe either left or right and watch!
 
+6/2/2015
+- Bug fixes for the decimal calculator. Hexadecimal calculator is done although it is still a minimum viable product.
 
 To do:
-Adding additional functionalities such as landscape orientation ability. 
-Working on the design and functionality of the hexadecimal and binary calculators.
-
+Working on the design and functionality of the binary calculator. Possible improvements such as a two's complement converter. 
+Optimizing the hex calculator
