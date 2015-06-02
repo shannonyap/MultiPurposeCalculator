@@ -129,10 +129,16 @@
 
 - (void) tapNumber:(UIButton *)sender {
     if (opcode != nil) {
-        if ((pressMore != 1 || (pressMore == 1 && [sender.titleLabel.text intValue] != 0)) && (!(opPrev == NULL))){
+        if ((pressMore != 1 || (pressMore == 1 && sender.tag != 1 && sender.tag != 2 && sender.tag != 3 && sender.tag != 7 && sender.tag != 11 && sender.tag != 15)) && (!(opPrev == NULL))){
             self.console.text = @"";
         }
         opcode = nil;
+    }
+    if (opcode == nil && equalPress > 0){
+        if (sender.tag != 1 && sender.tag != 2 && sender.tag != 3 && sender.tag != 7 && sender.tag != 11 && sender.tag != 15 && sender.tag != 18){
+            self.console.text = @"";
+        }
+        equalPress = 0;
     }
     if (sender.tag == 4 || sender.tag == 5 || sender.tag == 6 || sender.tag == 8 || sender.tag == 9 || sender.tag == 10 || sender.tag == 12 || sender.tag == 13 || sender.tag == 14 || sender.tag == 16){
         [sender setTitleColor: [UIColor colorWithRed:120.0/255.0f  green:120.0/255.0f blue:120.0/255.0f alpha:1.0f] forState: UIControlStateHighlighted];
@@ -175,29 +181,13 @@
         if (equalPress == 0){
                 secondNum = [self.console.text doubleValue];
                 if ([opPrev containsString: @"+"]){
-                    if ((firstNum + secondNum) == (int)(firstNum + secondNum)){
-                        self.console.text = [NSString stringWithFormat: @"%d", (int)(firstNum + secondNum)];
-                    } else {
-                        self.console.text = [NSString stringWithFormat: @"%g", firstNum + secondNum];
-                    }
+                    self.console.text = [NSString stringWithFormat: @"%g", firstNum + secondNum];
                 } else if ([opPrev containsString: @"-"]){
-                    if ((firstNum - secondNum) == (int)(firstNum - secondNum)){
-                        self.console.text = [NSString stringWithFormat: @"%d", (int)(firstNum - secondNum)];
-                    } else {
-                        self.console.text = [NSString stringWithFormat: @"%g", firstNum - secondNum];
-                    }
+                    self.console.text = [NSString stringWithFormat: @"%g", firstNum - secondNum];
                 } else if ([opPrev containsString: @"×"]){
-                    if ((firstNum * secondNum) == (int)(firstNum * secondNum)){
-                        self.console.text = [NSString stringWithFormat: @"%d", (int)(firstNum * secondNum)];
-                    } else {
-                        self.console.text = [NSString stringWithFormat: @"%g", firstNum * secondNum];
-                    }
+                    self.console.text = [NSString stringWithFormat: @"%g", firstNum * secondNum];
                 } else if ([opPrev containsString: @"÷"]) {
-                    if ((firstNum / secondNum) == (int)(firstNum / secondNum)){
-                        self.console.text = [NSString stringWithFormat: @"%d", (int)(firstNum / secondNum)];
-                    } else {
-                        self.console.text = [NSString stringWithFormat: @"%g", firstNum / secondNum];
-                    }
+                    self.console.text = [NSString stringWithFormat: @"%g", firstNum / secondNum];
                 }
         }
         equalPress = 1;
@@ -205,10 +195,12 @@
     if (sender.tag == 0){
         // clear
         self.console.text = @"";
+        opcode = nil;
         opPrev = nil;
         firstNum = 0;
         secondNum = 0;
         equalPress = 0;
+        pressMore = 0;
     }
     sender.alpha = 0.8;
 }
@@ -241,13 +233,13 @@
     colorCount--;
     for(UIButton *buttons in self.buttonArray){
         if (buttons.tag == 0 || buttons.tag == 1 || buttons.tag == 2 || buttons.tag == 3 || buttons.tag == 7 || buttons.tag == 11 || buttons.tag == 15 || buttons.tag == 18){
-            [UIButton animateWithDuration: 1.0 animations: ^{
+            [UIButton animateWithDuration: 0.5 animations: ^{
                 buttons.backgroundColor = [self.colorArray objectAtIndex: colorCount];
             }];
         }
     }
     colorCount--;
-    [UIImageView animateWithDuration: 1.0 animations: ^{
+    [UIImageView animateWithDuration: 0.5 animations: ^{
         [self.consoleColor setBackgroundColor: [self.colorArray objectAtIndex: colorCount]];
     }];
 }
