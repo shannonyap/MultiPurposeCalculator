@@ -22,6 +22,9 @@ Updates:
 6/3/2015 
 - Binary calculator is done! Fixed a crash in which the app would be terminated when division by zero was encountered. Minor code optimizations to improve readability. 
 
+Update: 
+- Added bitwise operators such as NOT, AND, XOR and OR. 
+
 To do:
 Two's complement converter to be added in a separate view controller under its own tab bar item.
 

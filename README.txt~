@@ -19,6 +19,9 @@ Updates:
 6/2//2015 
 - Fixed bugs for both decimal and hex calculators that occured when equals was pressed more than once followed by a number. Hex calculator is optimized and now up and running! Also has swipe like its decimal counterpart. 
 
+6/3/2015 
+- Binary calculator is done! Fixed a crash in which the app would be terminated when division by zero was encountered. Minor code optimizations to improve readability. 
+
 To do:
-Working on the design and functionality of the binary calculator. Possible improvements such as a two's complement converter. 
+Two's complement converter to be added in a separate view controller under its own tab bar item.
 

@@ -68,21 +68,21 @@
     [self.view addSubview: self.console];
     
     CGRect numPad = CGRectMake(0, img.frame.size.height, self.view.bounds.size.width, self.view.bounds.size.height - img.frame.size.height - self.tabBarController.tabBar.frame.size.height);
-    NSMutableArray *numPadArr = [[NSMutableArray alloc] initWithObjects: @"C",@"÷", @"×", @"+", @"-", @"0", @"1", @"=", nil];
+    NSMutableArray *numPadArr = [[NSMutableArray alloc] initWithObjects: @"C",@"÷", @"×", @"+", @"-", @"NOT", @"AND", @"XOR", @"OR", @"0", @"1", @"=", nil];
     self.buttonArray = [[NSMutableArray alloc] init];
     
     int x = 0;
     int y = 0;
     
-    for (int i = 0; i < 8; i++) {
-        UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(numPad.size.width/4 * x, img.frame.size.height + (y * numPad.size.height / 4), numPad.size.width / 4, numPad.size.height / 4)];
-        if (i == 0 || i == 7) {
-            button = [[UIButton alloc] initWithFrame: CGRectMake(numPad.size.width/4 * x,  img.frame.size.height + (y * numPad.size.height / 4), numPad.size.width, numPad.size.height / 4)];
+    for (int i = 0; i < 12; i++) {
+        UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(numPad.size.width/4 * x, img.frame.size.height + (y * numPad.size.height / 5), numPad.size.width / 4, numPad.size.height / 5)];
+        if (i == 0 || i == 11) {
+            button = [[UIButton alloc] initWithFrame: CGRectMake(numPad.size.width/4 * x,  img.frame.size.height + (y * numPad.size.height / 5), numPad.size.width, numPad.size.height / 5)];
             y++;
         }
         button.backgroundColor = [self.colorArray objectAtIndex: 3];
-        if (i == 5 || i == 6) {
-            button = [[UIButton alloc] initWithFrame: CGRectMake(numPad.size.width/4 * x, img.frame.size.height + (y * numPad.size.height / 4), numPad.size.width/2, numPad.size.height / 4)];
+        if (i == 9 || i == 10) {
+            button = [[UIButton alloc] initWithFrame: CGRectMake(numPad.size.width/4 * x, img.frame.size.height + (y * numPad.size.height / 5), numPad.size.width/2, numPad.size.height / 5)];
             [button setTitleColor: [UIColor blackColor] forState: UIControlStateNormal];
             button.backgroundColor = [UIColor whiteColor];
             x++;
@@ -115,21 +115,21 @@
 
 - (void) tapNumber:(UIButton *)sender {
     if (op != nil) {
-        if (!(opCount == 1 && (sender.tag == 1 || sender.tag == 2 || sender.tag == 3 || sender.tag == 4))){
+        if (!(opCount == 1 && (sender.tag != 0 && sender.tag != 9 && sender.tag != 10 && sender.tag != 11))){
             self.console.text = @"";
             opCount = 0;
         }
-        if (sender.tag != 8){
+        if (sender.tag != 12){
             equalPress = 0;
         }
         op = nil;
     } else if (op == nil && equalPress > 0){
-        if (sender.tag != 1 && sender.tag != 2 && sender.tag != 3 && sender.tag != 4 && sender.tag != 7){
+        if (sender.tag == 0 || sender.tag == 9 || sender.tag == 10){
             self.console.text = @"";
         }
         equalPress = 0;
     }
-    if (sender.tag == 5 || sender.tag == 6) {
+    if (sender.tag == 9 || sender.tag == 10) {
         if ([self.console.text stringByAppendingString: sender.titleLabel.text].length <= 16) { // limit length to 16 bits
             self.console.text = [self.console.text stringByAppendingString: sender.titleLabel.text]; // append text
         }
@@ -143,18 +143,26 @@
         op = nil;
         opNow = nil;
     }
-    if (sender.tag == 1 || sender.tag == 2 || sender.tag == 3 || sender.tag == 4 || sender.tag == 7) {
+    if (sender.tag != 0 && sender.tag != 9 && sender.tag != 10) {
         [UIView animateWithDuration: 0.15 animations: ^{
             [self.console setAlpha: 0.0f];
         }completion: ^(BOOL finished){
             [self.console setAlpha: 1.0f];
         }];
-        if (sender.tag != 7) {
+        if (sender.tag != 11 && sender.tag != 5) {
             op = sender.titleLabel.text;
             opNow = op;
             opCount = 1;
             firstNum = strtol([self.console.text UTF8String], NULL, 2);
-        } else if (sender.tag == 7) { // if equals button is pressed
+        } else if (sender.tag == 5) { // Bitwise NOT function
+            NSMutableString *strResult = [NSMutableString string];
+            for (NSUInteger i = 0; i < [self.console.text length]; i++) {
+                char ch = [self.console.text characterAtIndex:i];
+                NSString* string = [NSString stringWithFormat:@"%c" , ch];
+                [strResult appendFormat:@"%d", !string.intValue];
+            }
+            self.console.text = strResult;
+        } else if (sender.tag == 11) { // if equals button is pressed
             secondNum = strtol([self.console.text UTF8String], NULL, 2);
             equalPress++;
             if (equalPress == 1){
@@ -170,6 +178,12 @@
                     self.console.text = [NSString stringWithFormat: @"%@", [BinaryViewController decToBinary: (firstNum + secondNum)]];
                 } else if ([opNow isEqual: @"-"]){
                     self.console.text = [NSString stringWithFormat: @"%@", [BinaryViewController decToBinary: (firstNum - secondNum)]];
+                } else if ([opNow isEqual: @"AND"]){
+                    self.console.text = [NSString stringWithFormat: @"%@", [BinaryViewController decToBinary: (firstNum & secondNum)]];
+                } else if ([opNow isEqual: @"XOR"]){
+                    self.console.text = [NSString stringWithFormat: @"%@", [BinaryViewController decToBinary: (firstNum ^ secondNum)]];
+                } else if ([opNow isEqual: @"OR"]){
+                    self.console.text = [NSString stringWithFormat: @"%@", [BinaryViewController decToBinary: (firstNum | secondNum)]];
                 }
             }
         }
@@ -200,7 +214,7 @@
         self.consoleBack.backgroundColor = [self.colorArray objectAtIndex: colorCount];
     }];
     for ( UIButton *buttons in self.buttonArray) {
-        if (buttons.tag != 5 && buttons.tag != 6){
+        if (buttons.tag != 9 && buttons.tag != 10){
             [UIButton animateWithDuration: 0.5 animations: ^{
                 buttons.backgroundColor = [self.colorArray objectAtIndex: colorCount];
             }];
@@ -217,7 +231,7 @@
         self.consoleBack.backgroundColor = [self.colorArray objectAtIndex: colorCount];
     }];
     for ( UIButton *buttons in self.buttonArray) {
-        if (buttons.tag != 5 && buttons.tag != 6){
+        if (buttons.tag != 9 && buttons.tag != 10){
             [UIButton animateWithDuration: 0.5 animations: ^{
                 buttons.backgroundColor = [self.colorArray objectAtIndex: colorCount];
             }];
