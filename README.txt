@@ -25,6 +25,10 @@ Updates:
 Update: 
 - Added bitwise operators such as NOT, AND, XOR and OR. 
 
+6/4/2015:
+
+- Added splash screen.
+
 To do:
 Two's complement converter to be added in a separate view controller under its own tab bar item.
 

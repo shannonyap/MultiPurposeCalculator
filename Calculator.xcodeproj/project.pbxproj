@@ -11,13 +11,13 @@
 		DA88C53F1AFC54E600D19AFD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DA88C53E1AFC54E600D19AFD /* AppDelegate.m */; };
 		DA88C5451AFC54E600D19AFD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA88C5431AFC54E600D19AFD /* Main.storyboard */; };
 		DA88C5471AFC54E600D19AFD /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA88C5461AFC54E600D19AFD /* Images.xcassets */; };
-		DA88C54A1AFC54E600D19AFD /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA88C5481AFC54E600D19AFD /* LaunchScreen.xib */; };
 		DA88C5561AFC54E600D19AFD /* CalculatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DA88C5551AFC54E600D19AFD /* CalculatorTests.m */; };
 		DA88C5611AFC554500D19AFD /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA88C5601AFC554500D19AFD /* MainViewController.m */; };
 		DA9595A91AFC5A4C00D30540 /* DecimalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9595A81AFC5A4C00D30540 /* DecimalViewController.m */; };
 		DA9595AC1AFC5A6000D30540 /* HexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9595AB1AFC5A6000D30540 /* HexViewController.m */; };
 		DA9595AF1AFC5A6D00D30540 /* BinaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9595AE1AFC5A6D00D30540 /* BinaryViewController.m */; };
 		DA9595B31AFC619500D30540 /* icons in Resources */ = {isa = PBXBuildFile; fileRef = DA9595B21AFC619500D30540 /* icons */; };
+		DAC082B51B20A62B00427F34 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAC082B41B20A62B00427F34 /* LaunchScreen.xib */; };
 		DAC195231AFC807900B3D7B8 /* Backgrounds in Resources */ = {isa = PBXBuildFile; fileRef = DAC195221AFC807900B3D7B8 /* Backgrounds */; };
 /* End PBXBuildFile section */
 
@@ -39,7 +39,6 @@
 		DA88C53E1AFC54E600D19AFD /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		DA88C5441AFC54E600D19AFD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DA88C5461AFC54E600D19AFD /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		DA88C5491AFC54E600D19AFD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		DA88C54F1AFC54E600D19AFD /* CalculatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalculatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA88C5541AFC54E600D19AFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DA88C5551AFC54E600D19AFD /* CalculatorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CalculatorTests.m; sourceTree = "<group>"; };
@@ -52,6 +51,7 @@
 		DA9595AD1AFC5A6D00D30540 /* BinaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BinaryViewController.h; sourceTree = "<group>"; };
 		DA9595AE1AFC5A6D00D30540 /* BinaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BinaryViewController.m; sourceTree = "<group>"; };
 		DA9595B21AFC619500D30540 /* icons */ = {isa = PBXFileReference; lastKnownFileType = folder; path = icons; sourceTree = "<group>"; };
+		DAC082B41B20A62B00427F34 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		DAC195221AFC807900B3D7B8 /* Backgrounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Backgrounds; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -105,8 +105,8 @@
 				DA9595AD1AFC5A6D00D30540 /* BinaryViewController.h */,
 				DA9595AE1AFC5A6D00D30540 /* BinaryViewController.m */,
 				DA88C5431AFC54E600D19AFD /* Main.storyboard */,
+				DAC082B41B20A62B00427F34 /* LaunchScreen.xib */,
 				DA88C5461AFC54E600D19AFD /* Images.xcassets */,
-				DA88C5481AFC54E600D19AFD /* LaunchScreen.xib */,
 				DA88C5391AFC54E500D19AFD /* Supporting Files */,
 			);
 			path = Calculator;
@@ -220,9 +220,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAC082B51B20A62B00427F34 /* LaunchScreen.xib in Resources */,
 				DA88C5451AFC54E600D19AFD /* Main.storyboard in Resources */,
 				DA9595B31AFC619500D30540 /* icons in Resources */,
-				DA88C54A1AFC54E600D19AFD /* LaunchScreen.xib in Resources */,
 				DA88C5471AFC54E600D19AFD /* Images.xcassets in Resources */,
 				DAC195231AFC807900B3D7B8 /* Backgrounds in Resources */,
 			);
@@ -276,14 +276,6 @@
 				DA88C5441AFC54E600D19AFD /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		DA88C5481AFC54E600D19AFD /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DA88C5491AFC54E600D19AFD /* Base */,
-			);
-			name = LaunchScreen.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -373,6 +365,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = Calculator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -383,6 +376,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = Calculator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
