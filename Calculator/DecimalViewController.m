@@ -142,7 +142,9 @@
     }
     if (sender.tag == 4 || sender.tag == 5 || sender.tag == 6 || sender.tag == 8 || sender.tag == 9 || sender.tag == 10 || sender.tag == 12 || sender.tag == 13 || sender.tag == 14 || sender.tag == 16){
         [sender setTitleColor: [UIColor colorWithRed:120.0/255.0f  green:120.0/255.0f blue:120.0/255.0f alpha:1.0f] forState: UIControlStateHighlighted];
-        self.console.text = [self.console.text stringByAppendingString: sender.titleLabel.text]; // put numbers into the textfield
+        if ([self.console.text stringByAppendingString: sender.titleLabel.text].length <= 16) { // limit length to 16 bits
+            self.console.text = [self.console.text stringByAppendingString: sender.titleLabel.text]; // append text
+        }
     } else if (sender.tag == 17){
         if ([[self.console.text componentsSeparatedByString: @"."]count] - 1 == 0){
             if (equalPress != 1){
@@ -187,7 +189,11 @@
                 } else if ([opPrev containsString: @"×"]){
                     self.console.text = [NSString stringWithFormat: @"%g", firstNum * secondNum];
                 } else if ([opPrev containsString: @"÷"]) {
-                    self.console.text = [NSString stringWithFormat: @"%g", firstNum / secondNum];
+                    if (secondNum != 0){
+                        self.console.text = [NSString stringWithFormat: @"%g", firstNum / secondNum];
+                    } else {
+                        self.console.text = @"NaN";
+                    }
                 }
         }
         equalPress = 1;

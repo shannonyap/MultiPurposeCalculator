@@ -64,7 +64,7 @@
     [self.console setTextAlignment: NSTextAlignmentRight];
     self.console.adjustsFontSizeToFitWidth = YES;
     [self.console setFont: [UIFont fontWithName: @"Arial" size: 70.0f]];
-    self.console.minimumFontSize = 35.0f;
+    self.console.minimumFontSize = 30.0f;
     [self.console setText: @""];
     [self.view addSubview: self.console];
     
@@ -131,7 +131,7 @@
         equalPress = 0;
     }
     if (sender.tag != 3 && sender.tag != 7 && sender.tag != 11 && sender.tag != 15 && sender.tag != 19 && sender.tag != 21) {
-        if (!(sender.tag == 21 && [self.console.text containsString: @"."])){
+        if ([self.console.text stringByAppendingString: sender.titleLabel.text].length <= 16) {
             self.console.text = [self.console.text stringByAppendingString: sender.titleLabel.text]; // append text
         }
     }
@@ -168,7 +168,11 @@
             secondNum = result;
             if (equalPress == 1){
                 if ([opNow isEqual: @"÷"]){
-                    self.console.text = [NSString stringWithFormat: @"%X", firstNum / secondNum];
+                    if (secondNum != 0){
+                        self.console.text = [NSString stringWithFormat: @"%X", firstNum / secondNum];
+                    } else {
+                        self.console.text = @"NaN";
+                    }
                 } else if ([opNow isEqual: @"×"]){
                     self.console.text = [NSString stringWithFormat: @"%X", firstNum * secondNum];
                 } else if ([opNow isEqual: @"+"]){
